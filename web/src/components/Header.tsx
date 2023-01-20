@@ -2,6 +2,7 @@ import LogoImage from '../assets/logo.svg'
 import * as Dialog from '@radix-ui/react-dialog'
 import { Plus, X } from 'phosphor-react'
 import { motion } from 'framer-motion'
+import { NewFormHabit } from './NewFormHabit'
 export function Header () {
 
   return (
@@ -39,6 +40,8 @@ export function Header () {
               <Dialog.Title className='text-white font-extrabold'>
                 Criar novo hábito
               </Dialog.Title>
+
+              <NewFormHabit />
             </motion.div>
           </Dialog.Content>
         </Dialog.Portal>
