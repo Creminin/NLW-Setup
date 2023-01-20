@@ -37,7 +37,7 @@ export function Header () {
                 <X size={24}/>
               </Dialog.Close>
 
-              <Dialog.Title className='text-white font-extrabold'>
+              <Dialog.Title className='font-extrabold text-2xl'>
                 Criar novo hábito
               </Dialog.Title>
 
