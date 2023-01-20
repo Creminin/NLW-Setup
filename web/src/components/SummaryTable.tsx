@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { generateDateYearFromBeginning } from '../utils/generate-date-year-from-beginning'
-import { HabitDays } from './HabitDays'
+import { PopOverHabits } from './PopOverHabits'
 
 const weekDays = [ 
   'Do', 
@@ -38,7 +38,14 @@ export function Summary() {
 
       <div className='grid grid-rows-7 grid-flow-col gap-3'>
         {summaryDays.map(date => {
-          return <HabitDays key={date.toString()}/>
+          return <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 5, duration: 0.7, default: { ease: "linear" }}}
+          key={date.toString()}
+          >
+            <PopOverHabits />
+          </motion.div>
         })}
 
 
