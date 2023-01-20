@@ -44,7 +44,7 @@ export function Summary() {
           transition={{ delay: 5, duration: 0.7, default: { ease: "linear" }}}
           key={date.toString()}
           >
-            <PopOverHabits />
+            <PopOverHabits completed={Math.round(Math.random() * 5)} amount={5}/>
           </motion.div>
         })}
 
