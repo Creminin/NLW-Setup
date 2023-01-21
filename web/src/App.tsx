@@ -1,6 +1,7 @@
 import { Header } from './components/Header'
 import { PageLoader } from './components/PageLoader'
-import { Summary } from './components/SummaryTable'
+import './lib/dayjs'
+import { SummaryTable } from './components/SummaryTable'
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
         <div className='w-full max-w-5xl px-6 flex flex-col gap-16'>
 
           <Header />
-          <Summary />
+          <SummaryTable />
         </div>
       </div>
     </div>

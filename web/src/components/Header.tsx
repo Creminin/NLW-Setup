@@ -31,7 +31,7 @@ export function Header () {
             <motion.div 
               className='absolute p-10 bg-zinc-900 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl w-full max-w-md'
               initial={{ height: '0', opacity: 0}}
-              animate={{ height: '50%', opacity: 1}}
+              animate={{ height: '100%', opacity: 1}}
               transition={{duration: 0.5}}
               >
               <Dialog.Close className='absolute right-6 top-6 text-zinc-400 hover:text-zinc-200'>

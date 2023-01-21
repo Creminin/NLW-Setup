@@ -1,65 +1,86 @@
-import { motion } from 'framer-motion'
-import { generateDateYearFromBeginning } from '../utils/generate-date-year-from-beginning'
-import { PopOverHabits } from './PopOverHabits'
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { api } from "../lib/axios";
+import { generateDateYearFromBeginning } from "../utils/generate-date-year-from-beginning";
+import { PopOverHabits } from './PopOverHabits';
+import { motion } from 'framer-motion';
 
-const weekDays = [ 
-  'Do', 
-  'Se', 
-  'Te', 
-  'Qua', 
-  'Qui', 
-  'Sex', 
-  'Sa'
-]
+const weekDays = [
+  'D',
+  'S',
+  'T',
+  'Q',
+  'Q',
+  'S',
+  'S',
+];
 
-const summaryDays = generateDateYearFromBeginning()
+const summaryDates = generateDateYearFromBeginning()
 
-const minimumSummarySize = 18 * 7
-const amountOfDaysToFill = minimumSummarySize - summaryDays.length
+const minimumSummaryDatesSize = 18 * 7 // 18 weeks
+const amountOfDaysToFill = minimumSummaryDatesSize - summaryDates.length
 
-export function Summary() {
+type Summary = {
+  id: string;
+  date: string;
+  amount: number;
+  completed: number;
+}[]
+
+export function SummaryTable() {
+
+  const [summary, setSummary] = useState<Summary>([])
+
+  useEffect(() =>{
+    api.get('summary').then(response => {
+      setSummary(response.data)
+    })
+  },[])
+
   return (
-    <div className='w-full flex gap-1'>
-      <div className='grid grid-rows-7 grid-flow-row gap-3'>
-        {weekDays.map((weekDays, i) => {
-          return(
-            <motion.div 
-            key={`${weekDays}-${i}`} 
-            className='text-zinc-400 text-xl h-10 w-10 font-bold flex items-center justify-center'
-            initial={{ opacity: 0, x: '-100vh' }}
-            animate={{ opacity: 1, x: '0' }}
-            transition={{ delay: 4, duration: 0.5}}
+    <div className="w-full flex">
+      <div className="grid grid-rows-7 grid-flow-row gap-3">
+        {weekDays.map((weekDay, i) => {
+          return (
+            <div
+              key={`${weekDay}-${i}`}
+              className="text-zinc-400 text-xl h-10 w-10 font-bold flex items-center justify-center"
             >
-              {weekDays}
-            </motion.div>
+              {weekDay}
+            </div>
           )
         })}
       </div>
 
-      <div className='grid grid-rows-7 grid-flow-col gap-3'>
-        {summaryDays.map(date => {
-          return <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 5, duration: 0.7, default: { ease: "linear" }}}
-          key={date.toString()}
-          >
-            <PopOverHabits completed={Math.round(Math.random() * 5)} amount={5}/>
-          </motion.div>
+      <div className="grid grid-rows-7 grid-flow-col gap-3">
+        {summary.length &&summaryDates.map((date) => {
+
+          const dayInSummary = summary.find(day => {
+            return dayjs(date).isSame(day.date, 'day')
+          })
+
+          return (
+            <PopOverHabits
+              key={date.toString()}
+              date={date}
+              amount={dayInSummary?.amount} 
+              defaultCompleted={dayInSummary?.completed} 
+            />
+          )
         })}
 
-
-        {amountOfDaysToFill > 0 && Array.from({ length: amountOfDaysToFill}).map(() => {
+        {amountOfDaysToFill > 0 && Array.from({ length: amountOfDaysToFill }).map((_, i) => {
           return (
             <motion.div 
-            className='w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg opacity-40 cursor-not-allowed'
+            key={i}
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
             transition={{ delay: 5.5, duration: 0.7}}
-            ></motion.div>
+            className="w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg opacity-40 cursor-not-allowed" 
+            />
           )
         })}
       </div>
     </div>
-  )
+  );
 }
